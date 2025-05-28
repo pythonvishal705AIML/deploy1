@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>ML Prediction</title>
+</head>
+<body>
+  <h2>Enter Features for Prediction:</h2>
+  <form id="predictForm">
+    <label>Length: <input type="number" id="len" required></label><br>
+    <label>Num Digits: <input type="number" id="numdigit" required></label><br>
+    <label>Has IP (0 or 1): <input type="number" id="has_ip" required></label><br>
+    <label>HTTPS (0 or 1): <input type="number" id="_https" required></label><br>
+    <label>Special Characters: <input type="number" id="Scharacter" required></label><br>
+    <label>@ Symbol (0 or 1): <input type="number" id="@_symbol" required></label><br>
+    <label>HTTP (0 or 1): <input type="number" id="http_" required></label><br>
+    <label>Subdomains: <input type="number" id="subdomains" required></label><br>
+    <label>Domain Length: <input type="number" id="domain_length" required></label><br>
+    <label>Entropy: <input type="number" id="entropy" step="any" required></label><br><br>
+
+    <button type="submit">Predict</button>
+  </form>
+
+  <p id="result"></p>
+
+  <script>
+    document.getElementById("predictForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const data = {
+        len: parseFloat(document.getElementById("len").value),
+        numdigit: parseFloat(document.getElementById("numdigit").value),
+        has_ip: parseFloat(document.getElementById("has_ip").value),
+        _https: parseFloat(document.getElementById("_https").value),
+        Scharacter: parseFloat(document.getElementById("Scharacter").value),
+        "@_symbol": parseFloat(document.getElementById("@_symbol").value),
+        http_: parseFloat(document.getElementById("http_").value),
+        subdomains: parseFloat(document.getElementById("subdomains").value),
+        domain_length: parseFloat(document.getElementById("domain_length").value),
+        entropy: parseFloat(document.getElementById("entropy").value)
+      };
+
+      const response = await fetch("/predict", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data)
+      });
+
+      const result = await response.json();
+      document.getElementById("result").innerText = "Prediction: " + result.prediction;
+    });
+  </script>
+</body>
+</html>
